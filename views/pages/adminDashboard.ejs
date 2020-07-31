@@ -204,7 +204,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Users</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">40,000</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><%= users.length %></div>
                     </div>
                     <div class="col-auto">
                       <i class="fa fa-users fa-2x" aria-hidden="true"></i>
@@ -221,7 +221,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active Users</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">2500</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><%= users.length %></div>
                     </div>
                     <div class="col-auto">
                       <i class="fa fa-users fa-2x" aria-hidden="true"></i>
@@ -238,10 +238,10 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pending Users</div>
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Posts</div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">70</div>
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%= posts.length %></div>
                         </div>
                       </div>
                     </div>
@@ -260,7 +260,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Posts Pending Review</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><%= pendingPosts.length %></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -287,37 +287,45 @@
                   <thead class="thead-dark">
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">First</th>
-                      <th scope="col">Last</th>
+                      <th scope="col">Title</th>
+                      <th scope="col">Date Created</th>
                       <th scope="col">Description</th>
                       <th scope="col">Status</th>
                       <th scope="col">Btns</th>
                     </tr>
                   </thead>
                   <tbody>
+                    <% if (posts.length > 0 ) { %>
+                    <% var num = 0 %>
+                    <% posts.forEach(post => { %>
+                    <% num++ %>
                     <tr>
-                      <th scope="row">1</th>
-                      <td>Tobi</td>
-                      <td>Osimosu</td>
-                      <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae hic dolores ut
-                        consequuntur! Inventore, dicta praesentium nobis labore rerum tempora corrupti quo ut quod,
-                        doloremque a, fugiat expedita minus. Nesciunt neque magni pariatur, in nulla illum ducimus
-                        eveniet fugit tempore sint nostrum perferendis, odit quibusdam et. Non officiis nemo quo illum,
-                        repudiandae excepturi et dicta dolorem minima sint cupiditate obcaecati autem fugit vitae
-                        consectetur iusto reiciendis dolorum recusandae quibusdam. Molestias dolor quo accusantium?
-                        Nobis incidunt sequi tempora quasi magnam atque qui iure provident ipsa suscipit neque, nesciunt
-                        numquam consectetur explicabo, quas quae omnis error veritatis quidem fugiat corporis voluptates
-                        fugit.</td>
-                      <td>Pending</td>
+                      <th scope="row"><%= num %></th>
+                      <td><%= post.title %></td>
+                      <td><%= post.date.toUTCString() %></td>
+                      <td><%= post.description.slice(0,90) + "....." %></td>
+                      <td><%= post.status === 'false' ? 'Pending' : 'Approved' %></td>
                       <td>
                         <div class="row d-flex flex-column">
                           <div class="col"><a href="#" class="btn btn-primary mb-3">View Post</a></div>
-                          <div class="col"><a href="#" class="btn btn-success mb-3">Approve</a></div>
-                          <div class="col"><a href="#" class="btn btn-secondary mb-3">Disapprove</a></div>
+                          <% if (post.status === 'false') { %>
+                            <div class="col"><a href="#" class="btn btn-success mb-3">Approve</a></div>
+                          <% } else { %>
+                            <div class="col"><a href="#" class="btn btn-secondary mb-3">Disapprove</a></div>
+                          <% } %>
                           <div class="col"><a href="#" class="btn btn-danger">Delete</a></div>
                         </div>
                       </td>
                     </tr>
+                    <% }) %>
+                    <% }  else { %>
+                    <tr>
+
+                      <td class="centered">No posts found</td>
+
+                    </tr>
+
+                    <% } %>
                   </tbody>
                 </table>
               </div>

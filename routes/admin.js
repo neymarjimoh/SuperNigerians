@@ -13,7 +13,7 @@ const {
 
 router.get('/dashboard', authorizeAdmin, dashboard);
 router.get('/dashboard/profile',authorizeAdmin, profile )
-router.get('/dashboard/users', getAllUsers);
+router.get('/dashboard/users', authorizeAdmin, getAllUsers);
 router.delete('/delete/:postId', authorizeAdmin, deletePost);
 router.put('/posts/:postId/approve', authorizeAdmin, approvePost);
 router.put('/posts/:postId/disapprove', authorizeAdmin, disApprovePost);

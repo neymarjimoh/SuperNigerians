@@ -4,15 +4,36 @@ const { renderPage } = require("../utils/render-page");
 const sendMail = require("../utils/send-email");
 
 module.exports = {
-  dashboard: async (req, res) => {
-    const data = {};
-    renderPage(
-      res,
-      "pages/adminDashboard",
-      data,
-      "Admin | Dashboard",
-      "/admin/dashboard"
-    );
+  dashboard: async (req, res, next) => {
+    try {
+      const posts = await Post.find();
+      const users = await User.find();
+      if (!posts) {
+        return req.flash("error", "No Posts found !");
+      }
+      let pendingPosts = [];
+      for (const post of posts) {
+        if (post.status === 'false') {
+          pendingPosts.push(post);
+        }
+      }
+      const data = {
+        posts,
+        users,
+        pendingPosts,
+      };
+      renderPage(
+        res,
+        "pages/adminDashboard",
+        data,
+        "Admin | Dashboard",
+        "/admin/dashboard"
+      );
+    } catch (err) {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    }
   },
 
   profile: async (req, res) => {
