@@ -19,7 +19,7 @@ const checkLoggedIn = (req, res, next) => {
 const authorizeAdmin = (req, res, next) => {
   const { user, isLoggedIn } = req.session;
   if(user && isLoggedIn && user.role === 'admin') {
-   return next();
+    return next();
   }
   return res.redirect('/posts');
 }
